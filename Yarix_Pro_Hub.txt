@@ -1,8 +1,7 @@
 -- ============================================
 -- Yarix Pro Hub
 -- By Yarix Pro.
--- Based on Abysall Hub Continued (open source)
--- All user-facing Abysall branding removed/replaced
+-- Anti-steal / Status / Analytics loaders removed
 -- ============================================
 
 
@@ -23,17 +22,16 @@ getgenv().Abysall = {
 
 
 local BaseUrl = "https://raw.githubusercontent.com/coolcookiebusiness/AbysallHubContinued/main/"
-loadstring(game:HttpGet(BaseUrl .. "Components/Status.luau"))(BaseUrl)
 
-if shared.Runningnofine then
-    return 
-end
+-- Status / anti-steal loader removed
+shared.Runningnofine = false
 
 getgenv().Abysall = {
     Environment = loadstring(game:HttpGet(BaseUrl .. "Components/Environment.luau"))(),
     ESPLibrary = loadstring(game:HttpGet(BaseUrl .. "Components/ESP.luau"))(),
-    ["16Notice"] = loadstring(game:HttpGet(BaseUrl .. "Components/16Notice.luau"))(),
-    Legit = true
+    ["16Notice"] = function() end, -- stub, no remote notice
+    Legit = true,
+    UILibrary = "Obsidian"
 }
 
 shared.Hastelepasta = true
@@ -91,9 +89,7 @@ Abysall.Interface = loadstring(game:HttpGet(
     BaseUrl .. "Components/Interface.luau"
 ))()
 
-Abysall.Analytics = loadstring(game:HttpGet(
-    BaseUrl .. "Components/Analytics.luau"
-))()
+Abysall.Analytics = { Track = function() end } -- analytics disabled
 
 
 Abysall.SavePath = "Doors/Game"
@@ -8420,3 +8416,4 @@ end)
 while not Globals.MainUI do task.wait() end
 Abysall.Interface.ApplySettingsTab(Window)
 Functions.Notify({ Title = "Successfully loaded in " .. math.floor((tick() - LoadStart) * 1000) / 1000 .. " seconds." , Body = "Press '" .. tostring(Options.MenuKeybind.Value) .. "' to toggle the UI."})
+
